@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <title>Document</title>
+    <style>
+        @font-face {
+            font-family: NetflixSans;
+            src: url("./fonts/NetflixSansRegular.ttf")
+            format("truetype");         
+        }
+
+        @font-face {
+            font-family: NetflixBold;
+            src: url("./fonts/NetflixSansBold.ttf")
+            format("truetype");         
+        }
+
+        body {
+            margin: 0px 0px 200px 0px;
+            font-family: NetflixSans;
+            background: rgb(20, 20, 20);
+        }
+
+        h1, h2 {
+            color: white;
+        }
+
+        .header {
+            width: 100%;
+            position: fixed;
+            background: rgb(20, 20, 20);
+            padding: 20px 50px;
+            display: flex;
+            z-index: 100;
+        }
+
+        .header img {
+            width: 80px;
+            margin-right: 10px;
+        }
+
+        .header ul {
+            margin: 0px;
+            list-style-type: none;
+        }
+
+        .header ul li {
+            display: inline;
+            margin-right: 20px;
+            font-size: 14px;
+            color: #e5e5e5;
+            cursor: pointer;
+        }
+
+        .header ul li:hover {
+            color: #fafafa;
+        }
+
+        .header ul li:first-child {
+            color: white;
+        }
+
+        .trending-banner {
+            width: 30%;
+            padding-top: 150px;
+            margin: 0px auto;
+        }
+
+        #trending-container {
+            width: 60%;
+            margin: 75px auto;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            row-gap: 20px;
+            column-gap: 20px;
+        }
+
+        #trending-container > div {
+            background: #fafafa;
+            border-radius: 5px;
+        }
+
+        #trending-container > div h2 {
+            color: rgb(20, 20, 20);
+            margin: 5px 0px;
+            white-space: nowrap; 
+            width: 350px;
+            overflow: hidden;
+            text-overflow: ellipsis; 
+        }
+
+        #trending-container > div h5 {
+            margin: 5px 0px;
+            text-transform: uppercase;
+            color: #E50914;
+        }
+
+        #trending-container > div h6 {
+            margin: 5px 0px;
+        }
+
+        #trending-container > div > div {
+            padding: 10px 20px;
+        }
+
+        #trending-container > div img {
+            width: 100%;
+            margin-right: 10px;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+        }
+
+        #trending-container > div > div > p {
+            white-space: nowrap; 
+            width: 350px;
+            overflow: hidden;
+            text-overflow: ellipsis; 
+        }
+
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="./index.html"><div><img src="./images/netflix_logo.png" alt=""></div></a>
+        <ul>
+            <li>Home</li>
+            <li>TV Shows</li>
+            <li>Movies</li>
+            <li>New & Popular</li>
+            <li>My List</li>
+        </ul>
+    </div>
+    <div id="control"></div>
+
+    <div class="trending-banner">
+        <img src="./images/netflix_trending.png" width="100%" alt="">
+    </div>
+    <div id="trending-container">
+
+    </div>
+</body>
+<script>
+    async function loadTrending() {
+        try {
+            var res = await fetch(`https://api.themoviedb.org/3/trending/all/day?api_key=d5e74a00df86cc17925a9f779c2e9e24`);
+            var data = await res.json();
+            console.log(data.results);
+            showTrending(data.results);
+        } catch(err) {
+            console.log(err);
+        }
+    }
+
+    loadTrending();
+
+    function showTrending(results) {
+        document.querySelector("#trending-container").textContent = "";
+        results.length = 10;
+        results.map(function(trending) {
+            var outerDiv = document.createElement("div");
+            var img = document.createElement("img");
+            img.src = "https://image.tmdb.org/t/p/original/" + trending.backdrop_path;
+            var innerDiv = document.createElement("div");
+            var h5 = document.createElement("h5");
+            h5.textContent = trending.media_type;
+            var h2 = document.createElement("h2");
+            if(trending.name)
+                h2.textContent = trending.name;
+            else h2.textContent = trending.original_title
+            var h6 = document.createElement("div");
+            if(trending.vote_count == 0)
+                h6.textContent = "N/A";
+            else h6.textContent = trending.vote_average  + " from " + trending.vote_count + " votes";
+            var p = document.createElement("p");
+            p.textContent = trending.overview;
+            innerDiv.append(h5, h2, h6, p);
+            outerDiv.append(img, innerDiv);
+            document.querySelector("#trending-container").append(outerDiv);
+        });
+    }
+
+</script>
+</html>

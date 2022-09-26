@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        @font-face {
+            font-family: NetflixSans;
+            src: url("./fonts/NetflixSansRegular.ttf")
+            format("truetype");         
+        }
+
+        @font-face {
+            font-family: NetflixBold;
+            src: url("./fonts/NetflixSansBold.ttf")
+            format("truetype");         
+        }
+
+        body {
+            margin: 0px 0px 200px 0px;
+            font-family: NetflixSans;
+            background: rgb(20, 20, 20);
+        }
+
+        h1, h2 {
+            color: white;
+        }
+
+        .header {
+            width: 100%;
+            position: fixed;
+            background: rgb(20, 20, 20);
+            padding: 20px 50px;
+            display: flex;
+            z-index: 100;
+        }
+
+        .header img {
+            width: 80px;
+            margin-right: 10px;
+        }
+
+        .header ul {
+            margin: 0px;
+            list-style-type: none;
+        }
+
+        .header ul li {
+            display: inline;
+            margin-right: 20px;
+            font-size: 14px;
+            color: #e5e5e5;
+            cursor: pointer;
+        }
+
+        .header ul li:hover {
+            color: #fafafa;
+        }
+
+        .header ul li:first-child {
+            color: white;
+        }
+
+        #home-banner-cover img {
+            width: 100%;
+            height: 800px;
+        }
+
+        #home-banner-trailer {
+            display: none;
+        }
+
+        .home-banner-inner {
+            position: absolute;
+            height: 800px;
+            top: 0px;
+            padding: 0px 50px;
+        }
+
+        .home-banner-inner img {
+            margin-top: 200px;
+            width: 518px;
+        }
+
+        .home-banner-inner p {
+            font-size: 24px;
+            line-height: 32px;
+            color: white;
+            width: 540px;
+        }
+
+        .home-banner-inner-action {
+            display: flex;
+        }
+
+        .home-banner-inner-action a {
+            text-decoration: none;
+        }
+
+        #play-button {
+            background: white;
+            border-radius: 5px;
+            padding: 8px 20px;
+            display: flex;
+            width: 90px;
+            cursor: pointer;
+        }
+
+        .more-info {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            padding: 8px 10px;
+            display: flex;
+            width: 150px;
+            margin-left: 10px;
+        }
+
+        #play-button img, .more-info img {
+            width: 35px;
+            height: 28px;
+            margin: 3px 10px 0px 0px;
+        }
+
+        #play-button p, .more-info p {
+            margin: 0px;
+            color: rgb(20, 20, 20);
+            font-size: 18px;
+        }
+
+        .more-info p {
+            margin: 0px;
+            color: white;
+            font-size: 18px;
+        }
+
+        .container {
+            padding: 10px 50px;
+        }
+
+        .tiles-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .tiles {
+            width: 19%;
+        }
+
+        .tiles img {
+            width: 100%;
+            border-radius: 5px;
+        }
+
+        #search-container {
+            margin: 30px 0px;
+            text-align: center;
+        }
+
+        #search-box {
+            background: white;
+            border: none;
+            outline: none;
+            padding: 10px 15px;
+            width: 425px;
+            font-size: 16px;
+            font-family: NetflixSans;
+            margin: 0px;
+            margin-right: 5px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        #search-button {
+            background: #E50914;
+            color: white;
+            border: none;
+            padding: 12px 45px 10px;
+            font-size: 16px;
+            margin: 10px 0px 0px 0px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        #search-container p {
+            margin: 20px 0px;
+            font-size: 14px;
+            color: #e5e5e5;
+        }
+
+        #search-results {
+            display: grid;
+            grid-template-columns: repeat(3, 300px);
+            margin: 0px auto;
+            row-gap: 10px;
+            column-gap: 10px;
+            width: 950px;
+        }
+
+        #search-results > div > img {
+            width: 100%;
+            height: 460px;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+        }
+
+        #search-results > div {
+            text-align: left;
+            background: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #search-results > div > div {
+            display: flex;
+            justify-content: space-between;
+            padding: 0px 10px;
+        }
+
+        #search-results > div > div > div {
+            width: 75%;
+        }
+
+        #search-results > div > div > div > h4 {
+            margin: 5px 0px 5px;
+        }
+
+        #search-results > div > div > div > h6 {
+            margin: 5px 0px 0px;
+            color: #E50914;
+            font-family: NetflixBold;
+        }
+
+        #search-results > div > div > div > p {
+            margin: 0px;
+            margin-bottom: 10px;
+            color: rgb(20, 20, 20);
+        }
+
+        #search-results > div > div > p {
+            margin: 0px;
+            margin-top: 20px;
+            font-family: NetflixBold;
+            font-size: 18px;
+            color: rgb(20, 20, 20);
+        }
+
+        .imdb-star {
+            width: 20px;
+        }
+
+        #movie-container {
+            display: none;
+            width: 100%;
+            position: fixed;
+            background:rgba(0, 0, 0, 1);
+            z-index: 101;
+            top: 0px;
+            left: 0px;
+            bottom: 0px;
+            color: white;
+            text-align: center;
+            padding: 20px 0px;
+        }
+
+        #movie-container > div {
+            width: 60%;
+            margin: 0px auto;
+        }
+
+        #movie-container > div > h3 {
+            color: #e5e5e5;
+            margin: 5px 0px;
+        }
+
+        #movie-container > div > h3:nth-last-child(2){
+            white-space: nowrap; 
+            width: 100%; 
+            overflow: hidden;
+            text-overflow: ellipsis; 
+        }
+
+        #movie-container > div > div {
+            background: #e5e5e5;
+            cursor: pointer;
+            width: 80px;
+            border-radius: 5px;
+            padding: 10px 15px;
+            margin: 20px auto 0px;
+            color: rgb(20, 20, 20);
+        }
+
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div><img src="./images/netflix_logo.png" alt=""></div>
+        <ul>
+            <li>Home</li>
+            <li>TV Shows</li>
+            <li>Movies</li>
+            <li>New & Popular</li>
+            <li>My List</li>
+        </ul>
+    </div>
+    <div class="home-banner">
+        <div id="home-banner-cover">
+            <img src="./images/home_banner_cover.webp" alt="">
+        </div>
+        <div id="home-banner-trailer">
+            <iframe width="100%" height="800" src="https://www.youtube.com/embed/928gFVXgEPQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="home-banner-inner">
+            <img src="./images/home_banner_logo.webp" alt="">
+            <p>While fighting crimes against women in Delhi, a short-fused policewoman and her level-headed female boss grapple with gender issues in their own lives.</p>
+            <div class="home-banner-inner-action">
+                <div id="play-button">
+                    <img src="./images/play-icon.png" alt="">
+                    <p>Play</p>
+                </div>
+                <a href="./trending.html">
+                    <div class="more-info">
+                        <img src="./images/info-icon.png" alt="">
+                        <p>Trending</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <h2>Popular on Netflix</h2>
+        <div class="tiles-container">
+            <div class="tiles">
+                <img src="./images/category-1.jpeg" alt="">
+            </div>
+            <div class="tiles">
+                <img src="./images/category-2.jpeg" alt="">
+            </div>
+            <div class="tiles">
+                <img src="./images/category-3.jpeg" alt="">
+            </div>
+            <div class="tiles">
+                <img src="./images/category-4.jpeg" alt="">
+            </div>
+            <div class="tiles">
+                <img src="./images/category-5.jpeg" alt="">
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <h2>Trending Now</h2>
+        <div class="tiles-container">
+            <div class="tiles">
+                <img src="./images/category-6.jpeg" alt="">
+            </div>
+            <div class="tiles">
+                <img src="./images/category-7.jpeg" alt="">
+            </div>
+            <div class="tiles">
+                <img src="./images/category-8.jpeg" alt="">
+            </div>
+            <div class="tiles">
+                <img src="./images/category-9.jpeg" alt="">
+            </div>
+            <div class="tiles">
+                <img src="./images/category-10.jpeg" alt="">
+            </div>
+        </div>
+    </div>
+    <div class="container" id="search-container">
+        <h1>Search Netflix</h1>
+        <div>
+            <input type="text" id="search-box" placeholder="Enter Movie Title to Search & Press Enter">
+            <button id="search-button">Search</button>
+        </div>
+        <p id="search-status"></p>
+        <div id="search-results"></div>
+    </div>
+    <div id="movie-container"></div>
+</body>
+<script>
+    document.querySelector("#search-box").addEventListener("input", function() {
+        debounce(searchMovies, 1000);
+    });
+    document.querySelector("#search-box").addEventListener("keydown", function(e) {
+        if(e.code == "Enter") 
+            searchMovies();
+    });
+    document.querySelector("#play-button").addEventListener("click", playTrailer);
+    var timerId;
+
+    async function searchMovies() {
+        var search = document.querySelector("#search-box").value;
+        if(search == "") {
+            document.querySelector("#search-results").textContent = "";
+            document.querySelector("#search-status").textContent = "Enter something to search!";
+            return;
+        }
+        var url = `http://www.omdbapi.com/?apikey=b42f3047&s=${search}`;
+        try {
+            document.querySelector("#search-results").textContent = "";
+            document.querySelector("#search-status").textContent = "Loading results..";
+            let res = await fetch(url);
+            let data = await res.json();
+            let searchResults = data.Search;
+            if(searchResults == undefined) {
+                document.querySelector("#search-status").textContent = "";
+                var img = document.createElement("img");
+                img.src = "https://www.waterandshark.com/assets/img/icons/noresult.gif";
+                img.style.width = "950px";
+                document.querySelector("#search-results").append(img);
+                document.querySelector("#search-results").style.width = "950px";
+                return;
+            }
+            for(let i = 0; i < searchResults.length; i++) {
+                let urlMore = `http://www.omdbapi.com/?apikey=b42f3047&i=${searchResults[i].imdbID}`;
+                let resMore = await fetch(urlMore);
+                let dataMore = await resMore.json();
+                searchResults[i] = dataMore;
+                if(i == searchResults.length-1)
+                   loadResults(searchResults);
+            }
+        } catch(err) {
+            console.log(err);
+        }
+    }
+
+    function loadResults(data) {
+        var searchResults = document.querySelector("#search-results");
+        if(data.length == 1)
+            searchResults.style.width = "300px";
+        else if(data.length == 2)
+            searchResults.style.width = "610px";
+        else
+            searchResults.style.width = "950px";
+        searchResults.textContent = "";
+        data.map(function(movie) {
+            var div = document.createElement("div");
+            var img = document.createElement("img");
+            if(movie.Poster == "N/A")
+                img.src = "https://raw.githubusercontent.com/vibrantachintya/netflix-clone/main/images/netflix_poster.png";
+            else img.src = movie.Poster;
+            var divInner = document.createElement("div");
+            var divText = document.createElement("div");
+            var h4 = document.createElement("h4");
+            h4.textContent = movie.Title;
+            var p = document.createElement("p");
+            p.textContent = "Released " + movie.Year;
+            var pRating = document.createElement("p");
+            if(movie.Ratings.length > 0) {
+                movie.rate = movie.Ratings[0]['Value'];
+            pRating.textContent = movie.Ratings[0]['Value'];
+            var r = movie.Ratings[0]['Value'].split("/");
+            if(r[0] > 8.5) {
+                var h6 = document.createElement("h6");
+                h6.textContent = "RECOMMENDED";
+                divText.append(h6, h4, p);
+            } else {
+                divText.append(h4, p);
+            }
+            } else {
+                divText.append(h4, p);
+                movie.rate = "N/A";
+                pRating.textContent = "N/A";
+            }
+        
+            divInner.append(divText, pRating);
+            div.append(img, divInner);
+            div.addEventListener("click", function() {
+                showMovie(movie);
+            })
+            searchResults.append(div);
+        });
+        document.querySelector("#search-status").textContent = `${data.length} results loaded!`;
+    }
+
+    function showMovie(movie) {
+        document.querySelector("body").style.overflow = "hidden";
+        var container = document.querySelector("#movie-container");
+        container.style.display = "block";
+        container.textContent = "";
+        var outerDiv = document.createElement("div");
+        var img = document.createElement("img");
+        if(movie.Poster == "N/A")
+                img.src = "https://raw.githubusercontent.com/vibrantachintya/netflix-clone/main/images/netflix_poster.png";
+        else img.src = movie.Poster;
+        var h1 = document.createElement("h1");
+        h1.textContent = movie.Title;
+        var h4 = document.createElement("h4");
+        h4.textContent = "IMDb : " + movie.rate;
+        var h30 = document.createElement("h3");
+        h30.textContent = "Released : " + movie.Released;
+        var h31 = document.createElement("h3");
+        h31.textContent = "Directed By : " + movie.Director;
+        var h3 = document.createElement("h3");
+        h3.textContent = "Starring : " + movie.Actors;
+        var h32 = document.createElement("h3");
+        h32.textContent = "Plot : " + movie.Plot;
+        var closeDiv = document.createElement("div");
+        closeDiv.textContent = "Close";
+        closeDiv.addEventListener("click", function() {
+            container.style.display = "none";
+            document.querySelector("body").style.overflow = "scroll";
+        });
+        outerDiv.append(img, h1, h4, h30, h31, h3, h32, closeDiv);
+        container.append(outerDiv);
+        
+    }
+
+    function debounce(func, delay) {
+        if (timerId) {
+            clearTimeout(timerId);
+        }
+
+        timerId = setTimeout(function () {
+            func();
+        }, delay);
+    }
+
+
+
+
+    var toggle = 1;
+    function playTrailer() {
+        if(toggle == 1) {
+            document.querySelector("#home-banner-cover").style.display = "none";
+            document.querySelector("#home-banner-trailer").style.display = "block";
+            toggle = 0;
+        } else {
+            document.querySelector("#home-banner-cover").style.display = "block";
+            document.querySelector("#home-banner-trailer").style.display = "none";
+            toggle = 1;
+        }
+        
+    }
+
+
+</script>
+</html>
